@@ -1196,3 +1196,407 @@ footer.site-footer {
     font-size: 1.05rem;
   }
 }
+
+/* ==========================================================================
+   Multi-Agent Site Builder Overlay (Figma / Live Swarm Construction Effect)
+   ========================================================================== */
+
+.agent-builder-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9990;
+  overflow: hidden;
+  transition: opacity 0.4s ease;
+}
+
+.agent-builder-overlay.ab-overlay-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Top Figma-style Horizontal Ruler */
+.ab-ruler-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: rgba(14, 17, 26, 0.92);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.45);
+  z-index: 4;
+  overflow: hidden;
+}
+
+.ab-ruler-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.ab-ruler-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid rgba(148, 163, 184, 0.35);
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(203, 213, 225, 0.8);
+  user-select: none;
+}
+
+/* Guide Lines Canvas */
+.ab-guide-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Bounding Boxes & Wireframes Layer */
+.ab-boxes-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ab-wireframe-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  will-change: transform, width, height;
+  transition: opacity 0.25s ease;
+}
+
+.ab-wireframe-box.ab-box-fading {
+  opacity: 0;
+}
+
+.ab-main-frame {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid #18a0fb;
+  box-shadow: 0 0 0 1px rgba(24, 160, 251, 0.2), 0 0 14px rgba(24, 160, 251, 0.25);
+  transition: background-color 0.3s ease;
+}
+
+.ab-wireframe-box.is-card-box .ab-main-frame {
+  background: rgba(94, 106, 124, 0.58);
+  backdrop-filter: blur(2px);
+}
+
+.ab-wireframe-box.is-card-box.is-solidifying .ab-main-frame {
+  background: rgba(94, 106, 124, 0.16);
+  backdrop-filter: none;
+}
+
+/* Stacked nested frames like in the screenshots */
+.ab-nested-frame {
+  position: absolute;
+  border: 1px solid rgba(56, 189, 248, 0.85);
+  background: rgba(82, 94, 112, 0.38);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.ab-nested-frame.nf-1 {
+  top: -8px;
+  left: -10px;
+  right: 10px;
+  bottom: 8px;
+}
+
+.ab-nested-frame.nf-2 {
+  top: -16px;
+  left: -20px;
+  right: 20px;
+  bottom: 16px;
+}
+
+.ab-wireframe-box.is-solidifying .ab-nested-frame {
+  opacity: 0.45;
+}
+
+/* 4 Corner Resize Handles */
+.ab-handle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  border: 1.5px solid #18a0fb;
+}
+
+.ab-handle.tl { top: -3.5px; left: -3.5px; }
+.ab-handle.tr { top: -3.5px; right: -3.5px; }
+.ab-handle.bl { bottom: -3.5px; left: -3.5px; }
+.ab-handle.br { bottom: -3.5px; right: -3.5px; }
+
+/* Blue Dimension Pill (e.g. 380 × 240) */
+.ab-dim-pill {
+  position: absolute;
+  bottom: -19px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #18a0fb;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  letter-spacing: -0.02em;
+}
+
+.ab-dim-sub {
+  background: rgba(24, 160, 251, 0.82);
+  font-size: 8.5px;
+  bottom: -16px;
+}
+
+.ab-corner-plus {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 0 4px #18a0fb;
+}
+
+.ab-text-caret {
+  position: absolute;
+  right: -12px;
+  bottom: 2px;
+  color: #ffffff;
+  font-family: serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-shadow: 0 0 6px #38bdf8;
+  animation: abCaretBlink 0.35s steps(2, start) infinite;
+}
+
+@keyframes abCaretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* DOM Element States During Agent Construction */
+body.agent-building .ab-target-unbuilt {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body.agent-building .ab-target-building {
+  transition: none !important;
+}
+
+.ab-target-built {
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 24 Autonomous Agent Cursors Layer */
+.ab-cursors-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.ab-agent-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.65));
+}
+
+.ab-cursor-svg {
+  display: block;
+  transform: translate(-2px, -2px);
+}
+
+.ab-cursor-ghost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.ab-cursor-ghost.g1 {
+  opacity: 0.45;
+  transform: translate(-8px, -5px) scale(0.92);
+}
+
+.ab-cursor-ghost.g2 {
+  opacity: 0.22;
+  transform: translate(-15px, -9px) scale(0.85);
+}
+
+.ab-cursor-badge {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transform: rotate(-18deg);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+}
+
+.ab-cursor-crosshair,
+.ab-cursor-ibeam {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* Bottom Floating HUD Control Pill (Matches Screenshot) */
+.ab-hud-pill {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9997;
+  background: rgba(18, 19, 26, 0.94);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 6px 10px 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f1f5f9;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.6);
+  transition: transform 0.35s var(--transition-smooth), opacity 0.35s ease;
+  white-space: nowrap;
+}
+
+.ab-hud-pill.ab-hud-minimized {
+  transform: translateX(-50%) translateY(90px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ab-hud-dots {
+  display: flex;
+  align-items: center;
+}
+
+.ab-hud-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid #12131a;
+  margin-left: -3px;
+}
+
+.ab-hud-dots span:first-child {
+  margin-left: 0;
+}
+
+.ab-hud-agents {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.ab-hud-sep {
+  color: rgba(148, 163, 184, 0.45);
+}
+
+.ab-hud-layers {
+  color: #cbd5e1;
+  min-width: 110px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ab-hud-progress {
+  width: 72px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 99px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+.ab-hud-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  border-radius: 99px;
+  transition: width 0.08s linear;
+}
+
+.ab-hud-btn {
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #f8fafc;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.ab-hud-btn:hover,
+.ab-hud-btn.active {
+  background: #18a0fb;
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+
+.ab-hud-close {
+  padding: 3px 8px;
+  font-size: 13px;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .ab-hud-pill {
+    font-size: 10px;
+    gap: 6px;
+    padding: 5px 8px 5px 10px;
+    max-width: 95vw;
+  }
+
+  .ab-hud-progress {
+    width: 44px;
+  }
+
+  .ab-hud-layers {
+    min-width: 88px;
+  }
+}

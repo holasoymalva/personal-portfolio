@@ -20,7 +20,7 @@
     });
 
     setInterval(() => {
-      if (textNodes.length === 0) return;
+      if (textNodes.length === 0 || document.body.classList.contains("agent-building")) return;
 
       // Pick a random element
       const targetEl = textNodes[Math.floor(Math.random() * textNodes.length)];
@@ -75,7 +75,7 @@
       { threshold: 0.2 }
     );
 
-    document.querySelectorAll(".section-title, .hero-title").forEach((title) => {
+    document.querySelectorAll(".section-title").forEach((title) => {
       observer.observe(title);
     });
   }
