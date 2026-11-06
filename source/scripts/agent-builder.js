@@ -1,12 +1,12 @@
 /**
- * Multi-Agent Live Site Builder Engine
+ * Multi-Agent Scroll-Driven Site Builder Engine
  * Simulates 24 autonomous AI design/code agents constructing and modifying the DOM
- * in real time with Figma-style wireframes, rulers, snap guides, and multi-cursors.
+ * progressively as the user scrolls down the page, with Figma-style wireframes,
+ * rulers, snap guides, and multi-cursors.
  */
 
 (function () {
   const AGENT_COUNT = 24;
-  const TOTAL_VIRTUAL_LAYERS = 381;
 
   const AGENT_COLORS = [
     "#38bdf8", // Sky Blue
@@ -27,28 +27,18 @@
   let rulerTrack = null;
   let boxesContainer = null;
   let cursorsContainer = null;
-  let hudBar = null;
-  let hudLayerText = null;
-  let hudProgressFill = null;
-  let hudTourBtn = null;
-  let hudSpeedBtn = null;
 
   let agents = [];
   let buildItems = [];
-  let isBuilding = false;
-  let isFinished = false;
-  let speedMultiplier = 1;
-  let autoTourActive = false;
   let animFrameId = null;
   let lastFrameTime = 0;
-  let elapsedBuildTime = 0;
-  let totalBuildDuration = 12500; // ms at 1x speed
+  let idleFadeTimer = 0;
 
   function init() {
     collectBuildTargets();
     createOverlayDOM();
     spawnAgents();
-    startConstruction(false);
+    startScrollDrivenBuilder();
 
     window.addEventListener("resize", handleResize);
   }
@@ -85,7 +75,7 @@
       "#tech .section-title",
       ".pixel-train-section",
       ".train-hint",
-      // Projects (Granular like ShipRadar screenshot: image box + title + desc + tags)
+      // Projects
       "#projects .section-tag",
       "#projects .section-title",
       ".project-img-wrapper",
@@ -125,7 +115,6 @@
       return rA.left - rB.left;
     });
 
-    const count = rawElements.length;
     buildItems = rawElements.map((el, idx) => {
       const isText = el.matches(
         "h1, h2, p, .section-tag, .hero-status-tag, .timeline-role, .timeline-company, .timeline-date, .project-title, .project-desc, .about-text"
@@ -134,20 +123,14 @@
         ".about-card, .timeline-content, .project-img-wrapper, .resource-card, .pixel-train-section, .marquee-container, #interactiveAvatar"
       );
 
-      const normIdx = idx / Math.max(1, count - 1);
-      // Stagger items across the timeline so there are always 4-10 items actively building simultaneously
-      const startProgress = normIdx * 0.84;
-      const durationProgress = isCard ? 0.16 : 0.13;
-
       return {
         id: idx,
         el,
         isText,
         isCard,
-        startProgress,
-        endProgress: Math.min(0.995, startProgress + durationProgress),
         localProgress: 0,
-        state: "pending", // pending -> wireframe -> tweaking -> done
+        delayMs: 0,
+        state: "pending", // pending -> queued -> wireframe -> tweaking -> done
         boxEl: null,
       };
     });
@@ -179,78 +162,11 @@
     cursorsContainer = document.createElement("div");
     cursorsContainer.className = "ab-cursors-layer";
 
-    // Bottom Floating HUD Pill (matches screenshot)
-    hudBar = document.createElement("div");
-    hudBar.className = "ab-hud-pill";
-    hudBar.innerHTML = `
-      <div class="ab-hud-dots" aria-hidden="true">
-        <span style="background:#f87171"></span>
-        <span style="background:#38bdf8"></span>
-        <span style="background:#4ade80"></span>
-        <span style="background:#facc15"></span>
-        <span style="background:#c084fc"></span>
-      </div>
-      <span class="ab-hud-agents">${AGENT_COUNT} agents</span>
-      <span class="ab-hud-sep">|</span>
-      <span class="ab-hud-layers" id="abHudLayers">1 / ${TOTAL_VIRTUAL_LAYERS} layers</span>
-      <div class="ab-hud-progress" id="abHudProgress" title="Click to scrub build progress">
-        <div class="ab-hud-progress-fill" id="abHudProgressFill"></div>
-      </div>
-      <button type="button" class="ab-hud-btn" id="abHudTourBtn" title="Auto-scroll tour / Replay build">Tour</button>
-      <button type="button" class="ab-hud-btn" id="abHudSpeedBtn" title="Toggle build speed">1x</button>
-      <button type="button" class="ab-hud-btn ab-hud-close" id="abHudCloseBtn" aria-label="Skip or close agent builder">&times;</button>
-    `;
-
     overlayRoot.appendChild(rulerBar);
     overlayRoot.appendChild(guideCanvas);
     overlayRoot.appendChild(boxesContainer);
     overlayRoot.appendChild(cursorsContainer);
     document.body.appendChild(overlayRoot);
-    document.body.appendChild(hudBar);
-
-    hudLayerText = document.getElementById("abHudLayers");
-    hudProgressFill = document.getElementById("abHudProgressFill");
-    hudTourBtn = document.getElementById("abHudTourBtn");
-    hudSpeedBtn = document.getElementById("abHudSpeedBtn");
-    const closeBtn = document.getElementById("abHudCloseBtn");
-    const progressTrack = document.getElementById("abHudProgress");
-
-    hudTourBtn.addEventListener("click", () => {
-      if (isFinished) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        startConstruction(true);
-      } else {
-        autoTourActive = !autoTourActive;
-        hudTourBtn.classList.toggle("active", autoTourActive);
-      }
-    });
-
-    hudSpeedBtn.addEventListener("click", () => {
-      if (speedMultiplier === 1) speedMultiplier = 2;
-      else if (speedMultiplier === 2) speedMultiplier = 4;
-      else speedMultiplier = 1;
-      hudSpeedBtn.textContent = `${speedMultiplier}x`;
-    });
-
-    closeBtn.addEventListener("click", () => {
-      completeAllImmediately();
-      hudBar.classList.add("ab-hud-minimized");
-    });
-
-    progressTrack.addEventListener("click", (e) => {
-      const rect = progressTrack.getBoundingClientRect();
-      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      if (isFinished) {
-        startConstruction(false);
-      }
-      elapsedBuildTime = ratio * totalBuildDuration;
-      buildItems.forEach((item) => {
-        if (ratio < item.endProgress) {
-          item.localProgress = 0;
-          item.state = "pending";
-        }
-      });
-    });
 
     handleResize();
   }
@@ -370,28 +286,20 @@
     item.boxEl = box;
   }
 
-  function startConstruction(withAutoTour) {
+  function startScrollDrivenBuilder() {
     if (animFrameId) cancelAnimationFrame(animFrameId);
 
-    isBuilding = true;
-    isFinished = false;
-    autoTourActive = !!withAutoTour;
-    elapsedBuildTime = 0;
     lastFrameTime = performance.now();
+    idleFadeTimer = 0;
 
     document.body.classList.add("agent-building");
     overlayRoot.classList.remove("ab-overlay-hidden");
-    hudBar.classList.remove("ab-hud-minimized");
-    if (hudTourBtn) {
-      hudTourBtn.textContent = "Tour";
-      hudTourBtn.classList.toggle("active", autoTourActive);
-    }
-
     boxesContainer.innerHTML = "";
 
     buildItems.forEach((item) => {
       item.state = "pending";
       item.localProgress = 0;
+      item.delayMs = 0;
       item.boxEl = null;
       item.el.classList.add("ab-target-unbuilt", "pixel-constructed");
       item.el.classList.remove("ab-target-building", "ab-target-built");
@@ -403,118 +311,99 @@
     animFrameId = requestAnimationFrame(tick);
   }
 
-  function completeAllImmediately() {
-    isBuilding = false;
-    isFinished = true;
-    autoTourActive = false;
-    if (animFrameId) cancelAnimationFrame(animFrameId);
-
-    document.body.classList.remove("agent-building");
-    overlayRoot.classList.add("ab-overlay-hidden");
-    boxesContainer.innerHTML = "";
-    if (guideCtx) {
-      guideCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    }
-
-    buildItems.forEach((item) => {
-      item.state = "done";
-      item.localProgress = 1;
-      item.boxEl = null;
-      item.el.classList.remove("ab-target-unbuilt", "ab-target-building");
-      item.el.classList.add("ab-target-built", "pixel-constructed");
-      item.el.style.clipPath = "";
-      item.el.style.opacity = "";
-      item.el.style.transform = "";
-    });
-
-    if (hudLayerText) {
-      hudLayerText.textContent = `${TOTAL_VIRTUAL_LAYERS} / ${TOTAL_VIRTUAL_LAYERS} layers`;
-    }
-    if (hudProgressFill) {
-      hudProgressFill.style.width = "100%";
-    }
-    if (hudTourBtn) {
-      hudTourBtn.textContent = "Replay";
-      hudTourBtn.classList.remove("active");
-    }
-  }
-
   function tick(now) {
-    if (!isBuilding) return;
-
     const dt = Math.min(64, now - lastFrameTime);
     lastFrameTime = now;
 
-    elapsedBuildTime += dt * speedMultiplier;
-    const globalProgress = Math.min(1, elapsedBuildTime / totalBuildDuration);
+    const { activeRects, hasUnfinishedItems } = updateScrollBuildItems(dt);
 
-    const activeRects = updateBuildItems(globalProgress, dt);
-    updateHUD(globalProgress);
-    updateAutoTour(activeRects, globalProgress);
+    if (activeRects.length > 0) {
+      idleFadeTimer = 650; // Keep overlay visible for 650ms after active items finish
+      overlayRoot.classList.remove("ab-overlay-hidden");
+      document.body.classList.add("agent-building");
+    } else {
+      idleFadeTimer = Math.max(0, idleFadeTimer - dt);
+      if (idleFadeTimer === 0) {
+        overlayRoot.classList.add("ab-overlay-hidden");
+        document.body.classList.remove("agent-building");
+      }
+    }
+
     updateAgents(activeRects, now, dt);
     renderGuidesAndRulers(activeRects);
 
-    if (globalProgress >= 1 && activeRects.length === 0) {
-      setTimeout(() => {
-        if (isBuilding && elapsedBuildTime >= totalBuildDuration) {
-          completeAllImmediately();
-        }
-      }, 350);
+    if (!hasUnfinishedItems && activeRects.length === 0 && idleFadeTimer === 0) {
+      // Every element across the entire page has been scrolled to and built
+      overlayRoot.classList.add("ab-overlay-hidden");
+      document.body.classList.remove("agent-building");
+      if (guideCtx) {
+        guideCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      }
       return;
     }
 
     animFrameId = requestAnimationFrame(tick);
   }
 
-  function updateHUD(progress) {
-    const currentLayer = Math.max(
-      1,
-      Math.min(
-        TOTAL_VIRTUAL_LAYERS,
-        Math.round(progress * TOTAL_VIRTUAL_LAYERS)
-      )
-    );
-    if (hudLayerText) {
-      hudLayerText.textContent = `${currentLayer} / ${TOTAL_VIRTUAL_LAYERS} layers`;
-    }
-    if (hudProgressFill) {
-      hudProgressFill.style.width = `${(progress * 100).toFixed(1)}%`;
-    }
-  }
-
-  function updateBuildItems(globalProgress, dt) {
+  function updateScrollBuildItems(dt) {
     const activeRects = [];
     const vh = window.innerHeight;
+    let newlyQueuedCount = 0;
+    let hasUnfinishedItems = false;
 
-    // Count how many visible items are currently active so we can wake up viewport items if the user scrolls manually!
-    let visibleActiveCount = 0;
+    // Count how many items are currently actively building so we don't overload at once
+    let currentBuildingCount = 0;
+    for (let i = 0; i < buildItems.length; i++) {
+      const st = buildItems[i].state;
+      if (st === "wireframe" || st === "tweaking") {
+        currentBuildingCount++;
+      }
+    }
 
     for (let i = 0; i < buildItems.length; i++) {
       const item = buildItems[i];
       if (item.state === "done") continue;
 
+      hasUnfinishedItems = true;
       const rect = item.el.getBoundingClientRect();
-      const inViewport = rect.bottom > -40 && rect.top < vh + 40;
 
-      // Start building if global timeline reached startProgress OR if element is currently in viewport and we need active targets
-      const shouldStartByTimeline = globalProgress >= item.startProgress;
-      const shouldStartByViewport =
-        inViewport && visibleActiveCount < 8 && globalProgress > 0.02;
+      // Element is inside (or entering) the viewport
+      const isEnteringViewport = rect.top < vh * 0.92 && rect.bottom > -20;
+      // Element was already scrolled past above the viewport
+      const isScrolledPastAbove = rect.bottom <= -20;
 
-      if (item.state === "pending" && (shouldStartByTimeline || shouldStartByViewport)) {
+      if (isScrolledPastAbove && item.state === "pending") {
+        // Queue it immediately if user scrolled rapidly past it
+        item.state = "queued";
+        item.delayMs = 0;
+      } else if (isEnteringViewport && item.state === "pending") {
+        item.state = "queued";
+        // Stagger items newly entering viewport so agents construct them sequentially in waves
+        item.delayMs = newlyQueuedCount * 115;
+        newlyQueuedCount++;
+      }
+
+      if (item.state === "queued") {
+        if (item.delayMs > 0) {
+          item.delayMs -= dt;
+          continue;
+        }
+        // Limit concurrent active wireframe boxes to keep visual clarity high
+        if (currentBuildingCount >= 9 && !isScrolledPastAbove) {
+          continue;
+        }
+
         item.state = "wireframe";
         item.localProgress = 0.01;
+        currentBuildingCount++;
         if (!item.boxEl) {
           createWireframeBox(item);
         }
       }
 
       if (item.state === "wireframe" || item.state === "tweaking") {
-        if (inViewport) visibleActiveCount++;
-
-        // Advance item's local construction progress
-        const itemDurationMs = item.isCard ? 2100 : 1550;
-        item.localProgress += (dt * speedMultiplier) / itemDurationMs;
+        const itemDurationMs = item.isCard ? 1450 : 1050;
+        item.localProgress += dt / itemDurationMs;
 
         if (item.localProgress >= 1) {
           item.state = "done";
@@ -528,7 +417,7 @@
             item.boxEl.classList.add("ab-box-fading");
             const boxToRemove = item.boxEl;
             item.boxEl = null;
-            setTimeout(() => boxToRemove.remove(), 250);
+            setTimeout(() => boxToRemove.remove(), 240);
           }
           continue;
         }
@@ -541,7 +430,7 @@
         // Progressive DOM reveal while agents build it
         if (item.isText) {
           const revealPct = Math.min(100, Math.max(6, localP * 112));
-          item.el.style.opacity = String(Math.min(1, 0.3 + localP * 0.85));
+          item.el.style.opacity = String(Math.min(1, 0.28 + localP * 0.85));
           item.el.style.clipPath = `polygon(0 0, ${revealPct.toFixed(1)}% 0, ${revealPct.toFixed(1)}% 100%, 0 100%)`;
         } else {
           const easeP = 1 - Math.pow(1 - localP, 3);
@@ -551,7 +440,8 @@
           item.el.style.transform = `translate3d(0, ${shiftY.toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
         }
 
-        if (inViewport && rect.width > 4 && rect.height > 4 && item.boxEl) {
+        const inVisibleScreen = rect.bottom > -60 && rect.top < vh + 60;
+        if (inVisibleScreen && rect.width > 4 && rect.height > 4 && item.boxEl) {
           item.boxEl.style.display = "block";
 
           const boxGrow = Math.min(1, 0.62 + localP * 0.55);
@@ -592,25 +482,7 @@
       }
     }
 
-    return activeRects;
-  }
-
-  function updateAutoTour(activeRects, progress) {
-    if (!autoTourActive) return;
-
-    const maxScroll = Math.max(
-      0,
-      document.documentElement.scrollHeight - window.innerHeight
-    );
-    const desiredScroll = progress * maxScroll;
-    const diff = desiredScroll - window.scrollY;
-
-    if (Math.abs(diff) > 4) {
-      window.scrollBy({
-        top: diff * 0.08 * speedMultiplier,
-        behavior: "instant",
-      });
-    }
+    return { activeRects, hasUnfinishedItems };
   }
 
   function updateAgents(activeRects, now, dt) {
@@ -624,7 +496,7 @@
         const assignedRect = activeRects[idx % activeRects.length];
 
         if (agent.retargetTimer <= 0) {
-          agent.retargetTimer = 160 + Math.random() * 320;
+          agent.retargetTimer = 140 + Math.random() * 260;
           agent.cornerIndex = (agent.cornerIndex + 1) % 5;
         }
 
@@ -680,7 +552,7 @@
         }
       }
 
-      const lerp = Math.min(0.36, agent.speed * speedMultiplier);
+      const lerp = Math.min(0.36, agent.speed * 1.25);
       agent.x += (agent.targetX - agent.x) * lerp;
       agent.y += (agent.targetY - agent.y) * lerp;
 
@@ -694,8 +566,9 @@
     const vh = window.innerHeight;
 
     guideCtx.clearRect(0, 0, vw, vh);
+    if (activeRects.length === 0) return;
 
-    // 1. Master Left Alignment Red Snap Line (matches the red vertical line in all 4 screenshots)
+    // 1. Master Left Alignment Red Snap Line
     const firstContainer = document.querySelector(".hero-section, .content-section");
     let redLineX = vw * 0.06;
     if (firstContainer) {
@@ -766,9 +639,4 @@
   }
 
   window.addEventListener("DOMContentLoaded", init);
-
-  window.triggerAgentBuilder = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    startConstruction(true);
-  };
 })();
