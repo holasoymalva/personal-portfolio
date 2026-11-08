@@ -14,9 +14,8 @@ const translations = {
 
     aboutTag: "01 // ABOUT ME",
     aboutTitle: "Engineering with humor, precision & high speed.",
-    aboutP1: "I am a Forward Deployed Engineer based in Mexico City with experience scaling platforms at companies like Nexcar AI, Amazon, BlackLine, Meta (Co-Dev Lead Meta DevC), Globant, and Grupo Salinas. I build at the intersection of AI agents, distributed systems, and creative WebGL — solving deeply complex engineering puzzles with speed, rigor, and craft.",
-    aboutP2: "Great software is only half the equation; the other half is empowering the humans behind it. Over the years, I’ve turned hard-learned production lessons into deep-dive technical writing for 14,000+ engineers on Dev.to and built a creative tech community of over 140,000+ followers across social platforms. No gatekeeping, just pure curiosity, humor, and relentless execution.",
-    aboutP3: "Whether you're breaking production, designing next-gen AI architectures, or preparing for high-stakes interviews, you're always welcome in my corner of the web. Explore my channels, say hello, and let's build something unforgettable together.",
+    aboutP1: "I am a Forward Deployed Engineer based in Mexico City with experience at world-class companies like Nexcar AI, Amazon, BlackLine, Meta (Co-Dev Lead Meta DevC), Globant, and Grupo Salinas.",
+    aboutP2: "Passionate about Python, TypeScript, Go, WebGL 3D, and AI agent architectures. From building financial platforms to open-source developer CLI assistants, I love solving hard technical challenges.",
 
     expTag: "02 // CAREER JOURNEY",
     expTitle: "Proven track record at top tech companies.",
@@ -51,9 +50,8 @@ const translations = {
 
     aboutTag: "01 // SOBRE MÍ",
     aboutTitle: "Ingeniería con precisión, velocidad y buen humor.",
-    aboutP1: "Soy Forward Deployed Engineer basado en Ciudad de México con experiencia escalando plataformas en compañías como Nexcar AI, Amazon, BlackLine, Meta (Co-Dev Lead Meta DevC), Globant y Grupo Salinas. Construyo en la intersección de agentes de IA, sistemas distribuidos y WebGL interactivo — resolviendo desafíos técnicos de alta complejidad con velocidad, rigor y oficio.",
-    aboutP2: "El gran software es solo la mitad de la ecuación; la otra mitad es inspirar a las personas detrás de la pantalla. A lo largo del camino, he transformado lecciones de producción en guías técnicas seguidas por más de 14,000 ingenieros en Dev.to y formado una comunidad de más de 140,000 creadores y developers en redes sociales. Cero poses, sin filtros: pura curiosidad técnica, humor y ejecución sin límites.",
-    aboutP3: "Ya sea que estés resolviendo bugs imposibles, diseñando arquitecturas de IA de nueva generación o preparando entrevistas de alto nivel, bienvenido a mi rincón de internet. Date una vuelta por mis redes, saluda y construyamos algo verdaderamente memorable juntos.",
+    aboutP1: "Soy Forward Deployed Engineer basado en Ciudad de México con experiencia en compañías de nivel mundial como Nexcar AI, Amazon, BlackLine, Meta (Co-Dev Lead Meta DevC), Globant y Grupo Salinas.",
+    aboutP2: "Apasionado por Python, TypeScript, Go, WebGL 3D y arquitecturas de agentes de IA. Desde la creación de plataformas financieras hasta asistentes CLI open-source, me encanta resolver grandes retos técnicos.",
 
     expTag: "02 // TRAYECTORIA",
     expTitle: "Experiencia comprobada en líderes tecnológicos.",

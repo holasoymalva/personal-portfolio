@@ -12,15 +12,14 @@
 ===================================================================
 
 [PROFILE]
-  Name      : Martin Manriquez (@holasoymalva)
-  Role      : Forward Deployed Engineer (FDE) & Tech Architect
-  Location  : Mexico City (CDMX)
-  Community : 140k+ followers across socials | 14k+ readers on Dev.to
-  Email     : contact@holasoymalva.com
-  LinkedIn  : https://www.linkedin.com/in/martin-manriquez/
-  GitHub    : https://github.com/holasoymalva
-  LeetCode  : https://leetcode.com/u/holasoymalva/
-  TikTok    : https://www.tiktok.com/@holasoymalva
+  Name     : Martin Manriquez (@holasoymalva)
+  Role     : Forward Deployed Engineer (FDE) & Tech Architect
+  Location : Mexico City (CDMX)
+  Email    : contact@holasoymalva.com
+  LinkedIn : https://www.linkedin.com/in/martin-manriquez/
+  GitHub   : https://github.com/holasoymalva
+  LeetCode : https://leetcode.com/u/holasoymalva/
+  TikTok   : https://www.tiktok.com/@holasoymalva
 
 [CAREER & EXPERIENCE HISTORY]
   • Nexcar AI       (Feb 2026 — Present) | Forward Deployed Engineer (FDE)
@@ -93,7 +92,7 @@ Type 'help' for command list, or type 'matrix' for CRT rain!
   • GitHub   : https://github.com/holasoymalva
   • LeetCode : https://leetcode.com/u/holasoymalva/
   • TikTok   : https://www.tiktok.com/@holasoymalva
-  • Dev.to   : https://dev.to/holasoymalva (14k+ Readers)
+  • Dev.to   : https://dev.to/holasoymalva
   • X/Twitter: https://twitter.com/holasoymalva
   • Email    : contact@holasoymalva.com
 `,
