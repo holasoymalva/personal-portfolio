@@ -15,7 +15,7 @@ const translations = {
     aboutTag: "01 // ABOUT ME",
     aboutTitle: "Engineering with humor, precision & high speed.",
     aboutP1: "Forward Deployed Engineer based in Mexico City, building at the intersection of AI agents, distributed systems, and creative WebGL.",
-    aboutP2: "Passionate about turning hard technical puzzles into fast, elegant, and engaging products — crafted with high precision, humor, and speed.",
+    aboutP2: "Over 279,000+ developers read my technical articles and engineering breakdowns. Connect with me across my networks below for system design guides, AI experiments, and open-source tools.",
 
     expTag: "02 // CAREER JOURNEY",
     expTitle: "Proven track record at top tech companies.",
@@ -51,7 +51,7 @@ const translations = {
     aboutTag: "01 // SOBRE MÍ",
     aboutTitle: "Ingeniería con precisión, velocidad y buen humor.",
     aboutP1: "Forward Deployed Engineer basado en Ciudad de México, creando en la frontera de agentes de IA, sistemas distribuidos y WebGL interactivo.",
-    aboutP2: "Apasionado por transformar problemas técnicos complejos en software rápido, elegante y con personalidad — siempre con humor, precisión y alta velocidad.",
+    aboutP2: "Más de 279,000 developers leen mis artículos y guías técnicas de ingeniería. Conecta conmigo en mis redes aquí abajo para breakdowns de arquitectura, experimentos con IA y herramientas open-source.",
 
     expTag: "02 // TRAYECTORIA",
     expTitle: "Experiencia comprobada en líderes tecnológicos.",
