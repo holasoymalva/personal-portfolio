@@ -26,10 +26,10 @@
     - Mentoring algorithms, data structures & tech interview prep for engineers.
   • BlackLine       (Jan 2024 — Jan 2026)| Senior Software Engineer
     - Provided technical expertise in the design & delivery of cloud platforms.
+  • Guros           (Apr 2023 — Aug 2023)| Tech Lead
+    - Led core engineering, digital insurance architecture & releases.
   • Amazon          (Feb 2023 — Apr 2023)| Software Engineer (Prime Music)
     - Golang & Node.js internal platform services, framework migrations & AWS deployments.
-  • Guros           (2022 — 2023)        | Tech Lead
-    - Led core engineering, digital insurance architecture & releases.
   • Globant         (2021 — 2023)        | Sr Software Engineer (Disney / Appetize)
     - Angular, Vue.js, Node.js & Java microservices for Disney and Appetize.
   • Coderhouse      (Sept 2021 — Feb 2023)| Programming Teacher
@@ -76,8 +76,8 @@ Type 'help' for command list, or type 'matrix' for CRT rain!
   1. Nexcar AI (Feb 2026-Present) — Forward Deployed Engineer (FDE)
   2. Ada (Dec 2025-May 2026) — Google Prep Interview Instructor
   3. BlackLine (Jan 2024-Jan 2026) — Senior Software Engineer
-  4. Amazon (Feb 2023-Apr 2023) — Software Engineer (Prime Music)
-  5. Guros (2022-2023) — Tech Lead
+  4. Guros (Apr 2023-Aug 2023) — Tech Lead
+  5. Amazon (Feb 2023-Apr 2023) — Software Engineer (Prime Music)
   6. Globant (2021-2023) — Sr Software Engineer (Disney / Appetize)
   7. Coderhouse (Sept 2021-Feb 2023) — Programming Teacher
   8. HeyGrows (2021-2022) — Co-Founder & PM
