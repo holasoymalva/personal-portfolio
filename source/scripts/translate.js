@@ -14,8 +14,8 @@ const translations = {
 
     aboutTag: "01 // ABOUT ME",
     aboutTitle: "Engineering with humor, precision & high speed.",
-    aboutP1: "I am a Forward Deployed Engineer based in Mexico City with experience at world-class companies like Nexcar AI, Amazon, BlackLine, Meta (Co-Dev Lead Meta DevC), Globant, and Grupo Salinas.",
-    aboutP2: "Passionate about Python, TypeScript, Go, WebGL 3D, and AI agent architectures. From building financial platforms to open-source developer CLI assistants, I love solving hard technical challenges.",
+    aboutP1: "Forward Deployed Engineer based in Mexico City, building at the intersection of AI agents, distributed systems, and creative WebGL.",
+    aboutP2: "Passionate about turning hard technical puzzles into fast, elegant, and engaging products — crafted with high precision, humor, and speed.",
 
     expTag: "02 // CAREER JOURNEY",
     expTitle: "Proven track record at top tech companies.",
@@ -50,8 +50,8 @@ const translations = {
 
     aboutTag: "01 // SOBRE MÍ",
     aboutTitle: "Ingeniería con precisión, velocidad y buen humor.",
-    aboutP1: "Soy Forward Deployed Engineer basado en Ciudad de México con experiencia en compañías de nivel mundial como Nexcar AI, Amazon, BlackLine, Meta (Co-Dev Lead Meta DevC), Globant y Grupo Salinas.",
-    aboutP2: "Apasionado por Python, TypeScript, Go, WebGL 3D y arquitecturas de agentes de IA. Desde la creación de plataformas financieras hasta asistentes CLI open-source, me encanta resolver grandes retos técnicos.",
+    aboutP1: "Forward Deployed Engineer basado en Ciudad de México, creando en la frontera de agentes de IA, sistemas distribuidos y WebGL interactivo.",
+    aboutP2: "Apasionado por transformar problemas técnicos complejos en software rápido, elegante y con personalidad — siempre con humor, precisión y alta velocidad.",
 
     expTag: "02 // TRAYECTORIA",
     expTitle: "Experiencia comprobada en líderes tecnológicos.",
