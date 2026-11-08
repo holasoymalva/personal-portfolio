@@ -20,18 +20,24 @@
   GitHub   : https://github.com/holasoymalva
 
 [CAREER & EXPERIENCE HISTORY]
-  • Nexcar AI       (Feb 2026 — Present) | Senior Software Engineer
+  • Nexcar AI       (Feb 2026 — Present) | Forward Deployed Engineer (FDE)
     - Engineering AI-driven software, process automation & intelligent platform architecture.
   • Ada             (Dec 2025 — May 2026)| Google Prep Interview Instructor
     - Mentoring algorithms, data structures & tech interview prep for engineers.
   • BlackLine       (Jan 2024 — Jan 2026)| Senior Software Engineer
     - Provided technical expertise in the design & delivery of cloud platforms.
+  • Amazon          (Feb 2023 — Apr 2023)| Software Engineer (Prime Music)
+    - Golang & Node.js internal platform services, framework migrations & AWS deployments.
   • Guros           (2022 — 2023)        | Tech Lead
     - Led core engineering, digital insurance architecture & releases.
   • Globant         (2021 — 2023)        | Sr Software Engineer (Disney / Appetize)
     - Angular, Vue.js, Node.js & Java microservices for Disney and Appetize.
+  • Coderhouse      (Sept 2021 — Feb 2023)| Programming Teacher
+    - Taught React, Angular, TypeScript & modern web development curriculum.
   • HeyGrows        (2021 — 2022)        | Product Manager & Co-Founder
     - Product strategy, telemetry analysis & technical execution.
+  • Grupo Salinas   (Sept 2019 — Feb 2021)| Software Engineer
+    - Python Flask & Angular financial assistant, Messenger platform API & Oracle DB.
   • Meta DevC CDMX  (2019 — 2021)        | Co-Dev Lead
     - Community leader, workshops, hackathons & tech ecosystem growth.
 
@@ -67,13 +73,16 @@ Type 'help' for command list, or type 'matrix' for CRT rain!
 `,
     exp: `
 [CAREER HISTORY]
-  1. Nexcar AI (Feb 2026-Present) — Senior Software Engineer
+  1. Nexcar AI (Feb 2026-Present) — Forward Deployed Engineer (FDE)
   2. Ada (Dec 2025-May 2026) — Google Prep Interview Instructor
   3. BlackLine (Jan 2024-Jan 2026) — Senior Software Engineer
-  4. Globant (2021-2023) — Sr Software Engineer (Disney / Appetize)
+  4. Amazon (Feb 2023-Apr 2023) — Software Engineer (Prime Music)
   5. Guros (2022-2023) — Tech Lead
-  6. HeyGrows (2021-2022) — Co-Founder & PM
-  7. Meta DevC CDMX (2019-2021) — Co-Dev Lead
+  6. Globant (2021-2023) — Sr Software Engineer (Disney / Appetize)
+  7. Coderhouse (Sept 2021-Feb 2023) — Programming Teacher
+  8. HeyGrows (2021-2022) — Co-Founder & PM
+  9. Grupo Salinas (Sept 2019-Feb 2021) — Software Engineer
+  10. Meta DevC CDMX (2019-2021) — Co-Dev Lead
 `,
     contact: `
 [DIRECT CONTACT FREQUENCY]

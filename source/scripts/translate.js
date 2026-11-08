@@ -2,19 +2,19 @@ const translations = {
   en: {
     heroTag: "Available for High-Impact Projects",
     heroTitle: "CREATIVE SOFTWARE ENGINEER & TECH ARCHITECT",
-    heroSubtitle: "Hi, I'm Martin Manriquez (@holasoymalva). Senior Software Engineer at Nexcar AI. Building next-gen AI tools, WebGL experiences, and high-performance distributed systems.",
+    heroSubtitle: "Hi, I'm Martin Manriquez (@holasoymalva). Forward Deployed Engineer (FDE) at Nexcar AI. Building next-gen AI tools, WebGL experiences, and high-performance distributed systems.",
     exploreBtn: "Explore Selected Works",
     terminalBtn: "Launch CLI Shell ~",
     
     ticker1: "META ALUMNI",
-    ticker2: "NEXCAR AI SENIOR SOFTWARE ENGINEER",
+    ticker2: "NEXCAR AI FORWARD DEPLOYED ENGINEER",
     ticker3: "BLACKLINE SR SOFTWARE ENGINEER",
     ticker4: "GUROS TECH LEAD",
     ticker5: "CREATIVE CODING & AI AGENTS",
 
     aboutTag: "01 // ABOUT ME",
     aboutTitle: "Engineering with humor, precision & high speed.",
-    aboutP1: "I am a Senior Software Engineer based in Mexico City with experience at world-class companies like Nexcar AI, BlackLine, Meta (Co-Dev Lead Meta DevC), Globant, and Guros.",
+    aboutP1: "I am a Forward Deployed Engineer based in Mexico City with experience at world-class companies like Nexcar AI, Amazon, BlackLine, Meta (Co-Dev Lead Meta DevC), Globant, and Grupo Salinas.",
     aboutP2: "Passionate about Python, TypeScript, Go, WebGL 3D, and AI agent architectures. From building financial platforms to open-source developer CLI assistants, I love solving hard technical challenges.",
 
     expTag: "02 // CAREER JOURNEY",
@@ -38,19 +38,19 @@ const translations = {
   es: {
     heroTag: "Disponible para proyectos de alto impacto",
     heroTitle: "CREATIVE SOFTWARE ENGINEER & TECH ARCHITECT",
-    heroSubtitle: "Hola, soy Martín Manríquez (@holasoymalva). Senior Software Engineer en Nexcar AI. Construyendo herramientas de IA de última generación, experiencias WebGL y sistemas distribuidos de alto rendimiento.",
+    heroSubtitle: "Hola, soy Martín Manríquez (@holasoymalva). Forward Deployed Engineer (FDE) en Nexcar AI. Construyendo herramientas de IA de última generación, experiencias WebGL y sistemas distribuidos de alto rendimiento.",
     exploreBtn: "Explorar Trabajos",
     terminalBtn: "Abrir Terminal CLI ~",
 
     ticker1: "META ALUMNI",
-    ticker2: "NEXCAR AI SENIOR SOFTWARE ENGINEER",
+    ticker2: "NEXCAR AI FORWARD DEPLOYED ENGINEER",
     ticker3: "BLACKLINE SR SOFTWARE ENGINEER",
     ticker4: "GUROS TECH LEAD",
     ticker5: "HERRAMIENTAS IA & CLI",
 
     aboutTag: "01 // SOBRE MÍ",
     aboutTitle: "Ingeniería con precisión, velocidad y buen humor.",
-    aboutP1: "Soy Senior Software Engineer basado en Ciudad de México con experiencia en compañías de nivel mundial como Nexcar AI, BlackLine, Meta (Co-Dev Lead Meta DevC), Globant y Guros.",
+    aboutP1: "Soy Forward Deployed Engineer basado en Ciudad de México con experiencia en compañías de nivel mundial como Nexcar AI, Amazon, BlackLine, Meta (Co-Dev Lead Meta DevC), Globant y Grupo Salinas.",
     aboutP2: "Apasionado por Python, TypeScript, Go, WebGL 3D y arquitecturas de agentes de IA. Desde la creación de plataformas financieras hasta asistentes CLI open-source, me encanta resolver grandes retos técnicos.",
 
     expTag: "02 // TRAYECTORIA",
